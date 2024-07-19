@@ -83,7 +83,7 @@ export const StateContextProvider = ({ children }) => {
 
             const transaction = await contract.deployed();
 
-            if(contract.address){
+            if (contract.address) {
                 const today = Date.now();
                 let date = new Date(today);
                 const _tokenCreatedDate = date.toLocaleDateString("en-US");
@@ -102,18 +102,18 @@ export const StateContextProvider = ({ children }) => {
                 let tokenHistory = [];
 
                 const history = localStorage.getItem("TOKEN_HISTORY");
-                if(history){
+                if (history) {
                     tokenHistory = JSON.parse(localStorage.getItem("TOKEN_HISTORY"));
                     tokenHistory.push(_token);
                     localStorage.setItem("TOKEN_HISTORY", tokenHistory);
                     setLoader(false);
-                    setReCall(reCall+1);
-                    setOpenTokenCreator(false); 
+                    setReCall(reCall + 1);
+                    setOpenTokenCreator(false);
                 } else {
                     tokenHistory.push(_token);
                     localStorage.setItem("TOKEN_HISTORY", tokenHistory);
                     setLoader(false);
-                    setReCall(reCall+1);
+                    setReCall(reCall + 1);
                     setOpenTokenCreator(false);
                 }
             }
@@ -162,8 +162,8 @@ export const StateContextProvider = ({ children }) => {
     }
     const createICOSALE = async (icoSale) => {
         try {
-            const {address, price} = icoSale;
-            if(!address || !price) return notifyError("Data is Missing...");
+            const { address, price } = icoSale;
+            if (!address || !price) return notifyError("Data is Missing...");
 
             setLoader(true);
             notifySuccess("Creating icoSale...")
@@ -179,10 +179,10 @@ export const StateContextProvider = ({ children }) => {
 
             await transaction.wait();
 
-            if(transaction.hash){
+            if (transaction.hash) {
                 setLoader(false);
                 setOpenCreateICO(false)
-                setReCall(reCall+1);
+                setReCall(reCall + 1);
             }
         } catch (error) {
             setLoader(false);
@@ -202,9 +202,9 @@ export const StateContextProvider = ({ children }) => {
             const _tokenBal = await contract.getBalance(tokenAddress);
             const _tokenDetails = await contract.getTokenDetails(tokenAddress);
 
-            const availableToken = ethers.utils.formatEther(_tokenDetails.toString());
+            const availableToken = ethers.utils.formatEther(_tokenBal.toString());
 
-            if(availableToken>0){
+            if (availableToken > 0) {
                 const price = ethers.utils.formatEther(_tokenDetails.price.toString()) * Number(tokenQuantity);
                 const payAmount = ethers.utils.parseUnits(price.toString(), "ether");
 
@@ -216,19 +216,60 @@ export const StateContextProvider = ({ children }) => {
                         gasLimit: ethers.utils.hexlify(8000000),
                     }
                 );
-                
+
                 await transaction.wait();
                 setLoader(false);
-                setReCall(reCall+1);
+                setReCall(reCall + 1);
                 setOpenBuyToken(false);
-                notifySuccess("Transaction done succesfully")
+                notifySuccess("Something went wrong!!")
             }
         } catch (error) {
+            setLoader(false);
+            setOpenBuyToken(false);
+            notifyError("")
             console.log(error);
         }
     }
-    const transferToken = async () => {
+    const transferToken = async (transferTokenData) => {
         try {
+            if(!transferTokenData.address || !transferTokenData.amount || !transferTokenData.tokenAdd){
+                return notifyError("DAta is Missing!!")
+            }
+            setLoader(true);
+            notifySuccess("Transaction is processing....");
+
+            const address = await connectWallet();
+
+            const contract = await ICO_MARKETPLACE_CONTRACT();
+            const _availableBAl = await contract.balanceOf(address);
+            const availableToken = ethers.utils.formatEther();
+
+            if(availableToken > 1){
+                const payAmount = ethers.utils.parseUnits(
+                    transferTokenData.amount.toString(),
+                    "ether"
+                );
+
+                const transaction = await contract.trasfer(
+                    transferTokenData.address,
+                    payAmount,
+                    {
+                        gasLimit: ethers.utils.hexlify(8000000),
+                    }
+                )
+
+                await transaction.wait();
+                setLoader(false);
+                setReCall(reCall+1);
+                setOpenTransferToken(false);
+                notifySuccess("Transaction done successfully")
+            }else {
+                setLoader(false);
+                setReCall(reCall+1);
+                setOpenTransferToken(false);
+                notifySuccess("Transaction done successfully")
+            }
+
 
         } catch (error) {
             console.log(error);

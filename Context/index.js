@@ -148,15 +148,68 @@ export const StateContextProvider = ({ children }) => {
     }
     const GET_ALL_ICOSALE_TOKEN = async () => {
         try {
+            setLoader(true);
+            const address = await connectWallet();
+            const contract = await ICO_MARKETPLACE_CONTRACT();
 
+            if (address) {
+                const allICOSaleToken = await contract.getAllTokens();
+
+                const _tokenArray = Promise.all(
+                    allICOSaleToken.map(async (token) => {
+                        const tokenContract = await TOKEN_CONTRACT(token?.token);
+
+                        const balance = await tokenContract.balanceOf(ICO_MARKETPLACE_ADDRESS)
+
+                        return {
+                            creator: token.creator,
+                            tokentoken: token.token,
+                            name: token.name,
+                            symbol: token.symbol,
+                            supported: token.supported,
+                            price: ethers.utils.formatEther(token?.price.toString()),
+                            icoSaleBal: ethers.utils.formatEther(balance.toString()),
+                        }
+                    })
+                );
+                setLoader(false);
+                return _tokenArray;
+            }
         } catch (error) {
             console.log(error);
         }
     }
     const GET_ALL_USER_ICOSALE_TOKEN = async () => {
         try {
+            setLoader(true);
+            const address = await connectWallet();
+            const contract = await ICO_MARKETPLACE_CONTRACT();
 
+            if (address) {
+                const allICOSaleToken = await contract.getTokenCreatedBy(address);
+
+                const _tokenArray = Promise.all(
+                    allICOSaleToken.map(async (token) => {
+                        const tokenContract = await TOKEN_CONTRACT(token?.token);
+
+                        const balance = await tokenContract.balanceOf(ICO_MARKETPLACE_ADDRESS)
+
+                        return {
+                            creator: token.creator,
+                            tokentoken: token.token,
+                            name: token.name,
+                            symbol: token.symbol,
+                            supported: token.supported,
+                            price: ethers.utils.formatEther(token?.price.toString()),
+                            icoSaleBal: ethers.utils.formatEther(balance.toString()),
+                        }
+                    })
+                );
+                setLoader(false);
+                return _tokenArray;
+            }
         } catch (error) {
+            notifyError("Something went wrong")
             console.log(error);
         }
     }
@@ -232,7 +285,7 @@ export const StateContextProvider = ({ children }) => {
     }
     const transferToken = async (transferTokenData) => {
         try {
-            if(!transferTokenData.address || !transferTokenData.amount || !transferTokenData.tokenAdd){
+            if (!transferTokenData.address || !transferTokenData.amount || !transferTokenData.tokenAdd) {
                 return notifyError("DAta is Missing!!")
             }
             setLoader(true);
@@ -244,7 +297,7 @@ export const StateContextProvider = ({ children }) => {
             const _availableBAl = await contract.balanceOf(address);
             const availableToken = ethers.utils.formatEther();
 
-            if(availableToken > 1){
+            if (availableToken > 1) {
                 const payAmount = ethers.utils.parseUnits(
                     transferTokenData.amount.toString(),
                     "ether"
@@ -260,28 +313,63 @@ export const StateContextProvider = ({ children }) => {
 
                 await transaction.wait();
                 setLoader(false);
-                setReCall(reCall+1);
+                setReCall(reCall + 1);
                 setOpenTransferToken(false);
                 notifySuccess("Transaction done successfully")
-            }else {
+            } else {
                 setLoader(false);
-                setReCall(reCall+1);
+                setReCall(reCall + 1);
                 setOpenTransferToken(false);
-                notifySuccess("Transaction done successfully")
+                notifyError("Your balance is Zero")
             }
 
 
         } catch (error) {
+            setLoader(false);
+            setReCall(reCall + 1);
+            setOpenTransferToken(false);
+            notifyError("Something went wrong!!")
             console.log(error);
         }
     }
-    const widthdrawToken = async () => {
+    const widthdrawToken = async (widthdrawQuantity) => {
         try {
+            if (!widthdrawQuantity.amount || !widthdrawQuantity.token) return notifyError("Data is missing");
 
+            setLoader(true);
+            notifySuccess("Transaction is processing!!");
+
+            const address = await connectWallet();
+            const contract = await ICO_MARKETPLACE_CONTRACT();
+
+            const payAmount = ethers.utils.parseUnits(
+                widthdrawQuantity.amount.toString(),
+                "ether"
+            )
+
+            const transaction = await contract.widthdraw(
+                widthdrawQuantity.token,
+                payAmount,
+                {
+                    gasLimit: ethers.utils.hexlify(8000000),
+                }
+            )
+
+            await transaction.wait();
+            setLoader(false);
+            setReCall(reCall + 1);
+            setOpenWithdrawToken(false);
+            notifySuccess("Transaction completed successsfully")
         } catch (error) {
+            setLoader(false);
+            setReCall(reCall + 1);
+            setOpenWithdrawToken(false);
+            notifyError("Something went wrong")
             console.log(error);
         }
     }
 
     return <StateContextProvider value={{}}>{children}</StateContextProvider>;
 }
+
+export const usesStateContext = () => useContext(StateContext);

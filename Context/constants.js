@@ -83,7 +83,7 @@ export const handleNetworkChange = async() => {
     await changeNetwork({networkName});
 }
 
-export const shortenAddress = (address) => `${address?.slice(0,5)} ...${address?.length-4}`;
+export const shortenAddress = (address) => `${address?.slice(0,5)} ...${address?.slice(address.length-4)}`;
 
 const fetchContract = (address, abi, signer) => new ethers.Contract(address, abi, signer);
 
@@ -106,7 +106,7 @@ export const ICO_MARKETPLACE_CONTRACT = async() => {
         console.log(error);
     }
 }
-export const TOKEN_CONTRACT = async(TOKEN_ADDRESS) => {
+export const TOKEN_CONTRACT = async( ) => {
     try {
         const web3Modal = new web3Modal();
         const connection = await web3Modal.connect();

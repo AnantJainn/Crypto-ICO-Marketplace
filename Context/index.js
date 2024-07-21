@@ -28,14 +28,15 @@ export const StateContextProvider = ({ children }) => {
 
     const checkIfWalletConnected = async () => {
         try {
-            if (!window.ethereum) return notifyError("No account found")
+            if (!window.ethereum) return notifyError("No account found");
+            await handleNetworkChange();
             const accounts = await window.ethereum.request({
                 method: "eth_accounts",
             });
 
             if (accounts.length) {
                 setAddress(accounts[0]);
-                const provider = new ethers.providers.Web3Provider(connection);
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
                 const getbalance = await provider.getBalance(accounts[0]);
                 const bal = ethers.utils.formatEther(getbalance);
                 setAccountBalance(bal);
@@ -45,6 +46,10 @@ export const StateContextProvider = ({ children }) => {
             console.log(error);
         }
     }
+    useEffect(() => {
+      checkIfWalletConnected();
+    }, [address])
+    
     const connectWallet = async () => {
         try {
             if (!window.ethereum) return notifyError("No account found")
@@ -54,7 +59,7 @@ export const StateContextProvider = ({ children }) => {
 
             if (accounts.length) {
                 setAddress(accounts[0]);
-                const provider = new ethers.providers.Web3Provider(connection);
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
                 const getbalance = await provider.getBalance(accounts[0]);
                 const bal = ethers.utils.formatEther(getbalance);
                 setAccountBalance(bal);
@@ -249,6 +254,8 @@ export const StateContextProvider = ({ children }) => {
             setLoader(true);
             notifySuccess("Purchasing token...");
 
+            if (!tokenQuantity || !tokenAddress) return notifyError("DAta missing");
+
             const address = await connectWallet();
             const contract = await ICO_MARKETPLACE_CONTRACT();
 
@@ -293,7 +300,7 @@ export const StateContextProvider = ({ children }) => {
 
             const address = await connectWallet();
 
-            const contract = await ICO_MARKETPLACE_CONTRACT();
+            const contract = await TOKEN_CONTRACT(transferTokenData.tokenAdd);
             const _availableBAl = await contract.balanceOf(address);
             const availableToken = ethers.utils.formatEther();
 
@@ -369,7 +376,7 @@ export const StateContextProvider = ({ children }) => {
         }
     }
 
-    return <StateContextProvider value={{}}>{children}</StateContextProvider>;
+    return <StateContext.Provider value={{ widthdrawToken, buyToken, transferToken, createICOSALE, GET_ALL_ICOSALE_TOKEN, GET_ALL_USER_ICOSALE_TOKEN, createERC20, connectWallet, openBuyToken, setOpenBuyToken, openWithdrawToken, setOpenWithdrawToken, openTransferToken, setOpenTransferToken, openTokenCreator, setOpenTokenCreator, openCreateICO, setOpenCreateICO, address, setAddress, accountBalance, loader, setLoader, currency, PINATA_API_KEY, PINATA_SECRET_KEY }}>{children}</StateContext.Provider>;
 }
 
 export const usesStateContext = () => useContext(StateContext);

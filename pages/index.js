@@ -18,6 +18,7 @@ import Card from "../Components/Card";
 import BuyToken from "../Components/BuyToken";
 import WidthdrawToken from "../Components/WidthdrawToken";
 import TokenTransfer from "../Components/TokenTransfer";
+import ICOMarket from "../Components/ICOMarket";
 import { ICO_MARKETPLACE_ADDRESS, shortenAddress } from "../Context/constants";
 
 
@@ -60,7 +61,7 @@ const index = () => {
         <ICOMarket />
       )
     }
-    {openTokenCreator && <TokenCreator />}
+    {openTokenCreator && <TokenCreator createERC20={createERC20} shortenAddress={shortenAddress} setOpenTokenCreator={setOpenTokenCreator} setLoader={setLoader} address={address} connectWallet={connectWallet} PINATA_API_KEY={PINATA_API_KEY} PINATA_SECRET_KEY={PINATA_SECRET_KEY} />}
     {openTokenHistory && <TokenHistory />}
     {openCreateICO && <CreateICO />}
     {openICOMarketplace && <ICOMarket />}

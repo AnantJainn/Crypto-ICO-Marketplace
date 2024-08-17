@@ -80,7 +80,7 @@ export const StateContextProvider = ({ children }) => {
 
             const totalSupply = Number(supply);
             const _initialSupply = ethers.utils.parseEther(
-                totalSupply.toString,
+                totalSupply.toString(),
                 "ether"
             )
 
@@ -137,7 +137,7 @@ export const StateContextProvider = ({ children }) => {
             if (!name || !symbol || !supply) {
                 notifyError("Data Missing");
             } else {
-                const web3Modal = new web3Modal();
+                const web3Modal = new Web3Modal();
                 const connection = await web3Modal.connect();
                 const provider = new ethers.providers.Web3Provider(connection);
                 const signer = provider.getSigner();

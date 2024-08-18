@@ -10,8 +10,8 @@ import UploadICON from "./SVG/UploadICON";
 
 const UploadLogo = ({imageURL, setImageURL, setLoader, PINATA_API_KEY, PINATA_SECRET_KEY}) => {
 
-  const notifySuccess = (msg) => toast.success(msg, { duration: 200 });
-  const notifyError = (msg) => toast.error(msg, { duration: 200 });
+  const notifySuccess = (msg) => toast.success(msg, { duration: 2000 });
+  const notifyError = (msg) => toast.error(msg, { duration: 2000 });
 
   const uploadToIPFS = async (file) => {
     if(file) {

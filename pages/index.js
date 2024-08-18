@@ -62,7 +62,7 @@ const index = () => {
       )
     }
     {openTokenCreator && <TokenCreator createERC20={createERC20} shortenAddress={shortenAddress} setOpenTokenCreator={setOpenTokenCreator} setLoader={setLoader} address={address} connectWallet={connectWallet} PINATA_API_KEY={PINATA_API_KEY} PINATA_SECRET_KEY={PINATA_SECRET_KEY} />}
-    {openTokenHistory && <TokenHistory />}
+    {openTokenHistory && <TokenHistory shortenAddress={shortenAddress} setOpenTokenHistory={setOpenTokenHistory} />}
     {openCreateICO && <CreateICO />}
     {openICOMarketplace && <ICOMarket />}
     {openBuyToken && <BuyToken />}

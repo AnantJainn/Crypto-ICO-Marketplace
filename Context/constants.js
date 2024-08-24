@@ -1,5 +1,8 @@
 import { ethers } from "ethers";
-import web3Modal from "web3modal";
+// import web3Modal from "web3modal";
+import Web3Modal from "web3modal";
+
+// import web3Modal from "web3modal"
 
 import ERC20Generator from "./ERC20Generator.json"
 import icoMarketplace from "./icoMarketplace.json"
@@ -24,7 +27,7 @@ const networks = {
             symbol: "MATIC",
             decimals: 18,
         },
-        rpcUrls: ["https://rpc-amoy.polygon.technology/"],
+        rpcUrls: ["https://rpc.ankr.com/polygon_amoy/"],
         blockExplorerUrls: ["https://www.oklink.com/amoy"]
     },
     polygon: {
@@ -89,7 +92,7 @@ const fetchContract = (address, abi, signer) => new ethers.Contract(address, abi
 
 export const ICO_MARKETPLACE_CONTRACT = async() => {
     try {
-        const web3Modal = new web3Modal();
+        const web3Modal = new Web3Modal();
         const connection = await web3Modal.connect();
         const provider = new ethers.providers.Web3Provider(connection);
 

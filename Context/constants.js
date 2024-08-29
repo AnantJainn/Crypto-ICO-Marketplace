@@ -20,7 +20,7 @@ export const PINATA_SECRET_KEY = process.env.NEXT_PUBLIC_PINATA_SECRECT_KEY;
 
 const networks = {
     polygon_amoy: {
-        chainId: `0x${Number(80002).toString(16)}`,
+        chainId: "80002",
         chainName: "Polygon Amoy",
         nativeCurrency: {
             name: "MATIC",

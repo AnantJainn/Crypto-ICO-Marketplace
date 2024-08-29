@@ -98,9 +98,9 @@ const index = () => {
     {openTokenHistory && <TokenHistory shortenAddress={shortenAddress} setOpenTokenHistory={setOpenTokenHistory} />}
     {openCreateICO && <CreateICO shortenAddress={shortenAddress} setOpenCreateICO={setOpenCreateICO} connectWallet={connectWallet} address={address} createICOSALE={createICOSALE} />}
     {openICOMarketplace && <ICOMarket array={allUserIcos} shortenAddress={shortenAddress} handleClick={setOpenICOMarketplace} currency={currency} />}
-    {openBuyToken && <BuyToken />}
-    {openTransferToken && <TokenTransfer />}
-    {openWithdrawToken && <WidthdrawToken />}
+    {openBuyToken && <BuyToken address={address} buyToken={buyToken} connectWallet={connectWallet} setOpenBuyToken={setOpenBuyToken} buyICO={buyICO} currency={currency} />}
+    {openTransferToken && <TokenTransfer address={address} transferToken={transferToken} connectWallet={connectWallet} setOpenTransferToken={setOpenTransferToken} />}
+    {openWithdrawToken && <WidthdrawToken address={address} widthdrawToken={widthdrawToken} connectWallet={connectWallet} setOpenWithdrawToken={setOpenWithdrawToken} />}
     <Footer />
     {loader && <Loader />}
     {/* <Loader /> */}

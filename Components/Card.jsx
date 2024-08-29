@@ -1,6 +1,6 @@
 import React from "react";
 
-const Card = () => {
+const Card = ({ setOpenAllICO, setOpenTokenCreator, setOpenTransferToken, setOpenTokenHistory, setOpenWithdrawToken, setOpenICOMarketplace, copyAddress, setOpenCreateICO }) => {
   const features = [
     {
       title: "ICO ADDRESS",
@@ -51,8 +51,23 @@ const Card = () => {
       btnName: "Widthdraw Token",
     },
   ];
-  
-  return <div>Card</div>;
+
+  return (
+    <>
+      <div className="wrapper">
+        {features.map((feature, index) => (
+          <div key={index} className="card">
+            <p className="card-content" style={{ marginTop: "1rem" }}>
+              {feature.description}
+            </p>
+            <button className="card-btn" style={{ marginTop: "1rem" }} onClick={() => feature.title == "Your Created ICO" ? setOpenAllICO(true) : feature.title == "ICO Marketplace" ? setOpenICOMarketplace(true) : feature.title == "Create Token" ? setOpenTokenCreator(true) : feature.title == "History" ? setOpenTokenHistory(true) : feature.title == "Transfer Token" ? setOpenTransferToken(true) : feature.title == "Widthdraw Token" ? setOpenWithdrawToken(true) : feature.title == "ICO ADDRESS" ? copyAddress() : feature.title == "Create ICO" ? setOpenCreateICO(true) : "" }>
+              {feature.btnName}
+            </button>
+          </div>
+        ))}
+      </div>
+    </>
+  );
 };
 
 export default Card;

@@ -19,6 +19,7 @@ import BuyToken from "../Components/BuyToken";
 import WidthdrawToken from "../Components/WidthdrawToken";
 import TokenTransfer from "../Components/TokenTransfer";
 import ICOMarket from "../Components/ICOMarket";
+import Marketplace from "../Components/Marketplace"
 import { ICO_MARKETPLACE_ADDRESS, shortenAddress } from "../Context/constants";
 
 
@@ -75,6 +76,19 @@ const index = () => {
       setOpenICOMarketplace={setOpenICOMarketplace}
       openICOMarketplace={openICOMarketplace}
     />
+
+  <div className="create">
+    <h1 style={{fontSize: "2rem"}}>All ICOs Marketplace</h1>
+
+    {
+      allICOs?.length != 0 && (
+        <Marketplace array={allICOs} shortenAddress={shortenAddress} setBuyICO={setBuyICO} setOpenBuyToken={setOpenBuyToken} currency={currency} />
+      )
+    }
+
+    <Card setOpenAllICO={setOpenAllICO} setOpenTokenCreator={setOpenTokenCreator} setOpenTransferToken={setOpenTransferToken} setOpenTokenHistory={setOpenTokenHistory} setOpenWithdrawToken={setOpenWithdrawToken} setOpenICOMarketplace={setOpenICOMarketplace} copyAddress={copyAddress} setOpenCreateICO={setOpenCreateICO} />
+  </div>
+
     {
       openAllICO && (
         <ICOMarket array={allICOs} shortenAddress={shortenAddress} handleClick={setOpenAllICO} currency={currency} />

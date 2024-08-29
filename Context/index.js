@@ -245,7 +245,7 @@ export const StateContextProvider = ({ children }) => {
 
                         return {
                             creator: token.creator,
-                            tokentoken: token.token,
+                            token: token.token,
                             name: token.name,
                             symbol: token.symbol,
                             supported: token.supported,
@@ -278,7 +278,7 @@ export const StateContextProvider = ({ children }) => {
 
                         return {
                             creator: token.creator,
-                            tokentoken: token.token,
+                            token: token.token,
                             name: token.name,
                             symbol: token.symbol,
                             supported: token.supported,

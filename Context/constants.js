@@ -6,6 +6,7 @@ import Web3Modal from "web3modal";
 
 import ERC20Generator from "./ERC20Generator.json"
 import icoMarketplace from "./icoMarketplace.json"
+import SolarNFT from "./SolarNFT.json"
 
 export const ERC20GeneratorABI = ERC20Generator.abi;
 export const ERC20Generator_BYTECODE = ERC20Generator.bytecode;
@@ -13,12 +14,26 @@ export const ERC20Generator_BYTECODE = ERC20Generator.bytecode;
 export const ICO_MARKETPLACE_ADDRESS = process.env.NEXT_PUBLIC_ICO_MARKETPLACE_ADDRESS;
 export const ICO_MARKETPLACE_ABI = icoMarketplace.abi;
 
+export const SOLARNFT_ABI = SolarNFT.abi;
+export const SOLARNFT_BYTECODE = SolarNFT.data.bytecode;
+
 export const PINATA_API_KEY = process.env.NEXT_PUBLIC_PINATA_API_KEY;
 export const PINATA_SECRET_KEY = process.env.NEXT_PUBLIC_PINATA_SECRECT_KEY;
 
 //Networks
 
 const networks = {
+    sepolia: {
+        chainId: `0x${Number(11155111).toString(16)}`,
+        chainName: "Sepolia",
+        nativeCurrency: {
+            name: "SepoliaETH",
+            symbol: "SepoliaETH",
+            decimals: 18,
+        },
+        rpcUrls: ["https://sepolia.infura.io"],
+        blockExplorerUrls: ["https://sepolia.etherscan.io/"]
+    },
     polygon_amoy: {
         chainId: `0x${Number(80002).toString(16)}`,
         chainName: "Polygon Amoy",
@@ -65,9 +80,9 @@ const networks = {
     },
 };
 
-const changeNetwork = async({networkName}) => {
+const changeNetwork = async ({ networkName }) => {
     try {
-        if(!window.ethereum) throw new Error("No crypto Wallet found");
+        if (!window.ethereum) throw new Error("No crypto Wallet found");
         await window.ethereum.request({
             method: "wallet_addEthereumChain",
             params: [
@@ -81,16 +96,16 @@ const changeNetwork = async({networkName}) => {
     }
 }
 
-export const handleNetworkChange = async() => {
-    const networkName = "polygon_amoy";
-    await changeNetwork({networkName});
+export const handleNetworkChange = async () => {
+    const networkName = "sepolia";
+    await changeNetwork({ networkName });
 }
 
-export const shortenAddress = (address) => `${address?.slice(0,5)} ...${address?.slice(address.length-4)}`;
+export const shortenAddress = (address) => `${address?.slice(0, 5)} ...${address?.slice(address.length - 4)}`;
 
 const fetchContract = (address, abi, signer) => new ethers.Contract(address, abi, signer);
 
-export const ICO_MARKETPLACE_CONTRACT = async() => {
+export const ICO_MARKETPLACE_CONTRACT = async () => {
     try {
         const web3Modal = new Web3Modal();
         const connection = await web3Modal.connect();
@@ -109,7 +124,7 @@ export const ICO_MARKETPLACE_CONTRACT = async() => {
         console.log(error);
     }
 }
-export const TOKEN_CONTRACT = async(TOKEN_ADDRESS) => {
+export const TOKEN_CONTRACT = async (TOKEN_ADDRESS) => {
     try {
         const web3Modal = new Web3Modal();
         const connection = await web3Modal.connect();

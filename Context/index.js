@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import toast from "react-hot-toast";
 
-import { ERC20GeneratorABI, ERC20Generator_BYTECODE, handleNetworkChange, shortenAddress, ICO_MARKETPLACE_ADDRESS, ICO_MARKETPLACE_CONTRACT, TOKEN_CONTRACT, PINATA_API_KEY, PINATA_SECRET_KEY } from "./constants";
+import { SOLARNFT_ABI, SOLARNFT_BYTECODE, ERC20GeneratorABI, ERC20Generator_BYTECODE, handleNetworkChange, shortenAddress, ICO_MARKETPLACE_ADDRESS, ICO_MARKETPLACE_CONTRACT, TOKEN_CONTRACT, PINATA_API_KEY, PINATA_SECRET_KEY } from "./constants";
 
 const StateContext = createContext();
 
@@ -70,65 +70,65 @@ export const StateContextProvider = ({ children }) => {
         }
     }
 
-    // const _deployContract = async (signer, account, name, symbol, supply, imageURL) => {
-    //     try {
-    //         const factory = new ethers.ContractFactory(
-    //             ERC20GeneratorABI,
-    //             ERC20Generator_BYTECODE,
-    //             signer
-    //         )
+    const _deployContract = async (signer, account, name, symbol, supply, imageURL) => {
+        try {
+            const factory = new ethers.ContractFactory(
+                ERC20GeneratorABI,
+                ERC20Generator_BYTECODE,
+                signer
+            )
 
-    //         const totalSupply = Number(supply);
-    //         const _initialSupply = ethers.utils.parseEther(
-    //             totalSupply.toString(),
-    //             "ether"
-    //         )
+            const totalSupply = Number(supply);
+            const _initialSupply = ethers.utils.parseEther(
+                totalSupply.toString(),
+                "ether"
+            )
 
-    //         let contract = await factory.deploy(_initialSupply, name, symbol);
+            let contract = await factory.deploy(_initialSupply, name, symbol);
 
-    //         const transaction = await contract.deployed();
+            const transaction = await contract.deployed();
 
-    //         if (contract.address) {
-    //             const today = Date.now();
-    //             let date = new Date(today);
-    //             const _tokenCreatedDate = date.toLocaleDateString("en-US");
+            if (contract.address) {
+                const today = Date.now();
+                let date = new Date(today);
+                const _tokenCreatedDate = date.toLocaleDateString("en-US");
 
-    //             const _token = {
-    //                 account: account,
-    //                 supply: supply.toString(),
-    //                 name: name,
-    //                 symbol: symbol,
-    //                 tokenAddress: contract.address,
-    //                 transactionHash: contract.deployTransaction.hash,
-    //                 createdAt: _tokenCreatedDate,
-    //                 logo: imageURL
-    //             };
+                const _token = {
+                    account: account,
+                    supply: supply.toString(),
+                    name: name,
+                    symbol: symbol,
+                    tokenAddress: contract.address,
+                    transactionHash: contract.deployTransaction.hash,
+                    createdAt: _tokenCreatedDate,
+                    logo: imageURL
+                };
 
-    //             let tokenHistory = [];
+                let tokenHistory = [];
 
-    //             const history = localStorage.getItem("TOKEN_HISTORY");
-    //             if (history) {
-    //                 tokenHistory = JSON.parse(localStorage.getItem("TOKEN_HISTORY"));
-    //                 tokenHistory.push(_token);
-    //                 localStorage.setItem("TOKEN_HISTORY", tokenHistory);
-    //                 setLoader(false);
-    //                 setReCall(reCall + 1);
-    //                 setOpenTokenCreator(false);
-    //             } else {
-    //                 tokenHistory.push(_token);
-    //                 localStorage.setItem("TOKEN_HISTORY", tokenHistory);
-    //                 setLoader(false);
-    //                 setReCall(reCall + 1);
-    //                 setOpenTokenCreator(false);
-    //             }
-    //         }
+                const history = localStorage.getItem("TOKEN_HISTORY");
+                if (history) {
+                    tokenHistory = JSON.parse(localStorage.getItem("TOKEN_HISTORY"));
+                    tokenHistory.push(_token);
+                    localStorage.setItem("TOKEN_HISTORY", tokenHistory);
+                    setLoader(false);
+                    setReCall(reCall + 1);
+                    setOpenTokenCreator(false);
+                } else {
+                    tokenHistory.push(_token);
+                    localStorage.setItem("TOKEN_HISTORY", tokenHistory);
+                    setLoader(false);
+                    setReCall(reCall + 1);
+                    setOpenTokenCreator(false);
+                }
+            }
 
-    //     } catch (error) {
-    //         setLoader(false)
-    //         notifyError("Something went wrong, try later")
-    //         console.log(error);
-    //     }
-    // }
+        } catch (error) {
+            setLoader(false)
+            notifyError("Something went wrong, try later")
+            console.log(error);
+        }
+    }
     // const createERC20 = async (token, account, imageURL) => {
     //     const { name, symbol, supply } = token;
     //     try {
@@ -151,60 +151,420 @@ export const StateContextProvider = ({ children }) => {
     //         console.log(error);
     //     }
     // }
-    const _deployContract = async (signer, account, name, symbol, supply, imageURL) => {
+    // const _deployContract = async (signer, account, name, symbol, supply, imageURL) => {
+    //     try {
+    //         const factory = new ethers.ContractFactory(
+    //             ERC20GeneratorABI,
+    //             ERC20Generator_BYTECODE,
+    //             signer
+    //         );
+
+    //         const totalSupply = Number(supply);
+    //         const _initialSupply = ethers.utils.parseEther(
+    //             totalSupply.toString(),
+    //             "ether"
+    //         );
+
+    //         let contract = await factory.deploy(_initialSupply, name, symbol);
+
+    //         await contract.deployed();
+
+    //         if (contract.address) {
+    //             const today = Date.now();
+    //             let date = new Date(today);
+    //             const _tokenCreatedDate = date.toLocaleDateString("en-US");
+
+    //             const _token = {
+    //                 account: account,
+    //                 supply: supply.toString(),
+    //                 name: name,
+    //                 symbol: symbol,
+    //                 tokenAddress: contract.address,
+    //                 transactionHash: contract.deployTransaction.hash,
+    //                 createdAt: _tokenCreatedDate,
+    //                 logo: imageURL
+    //             };
+
+    //             let tokenHistory = [];
+
+    //             const history = localStorage.getItem("TOKEN_HISTORY");
+    //             if (history) {
+    //                 tokenHistory = JSON.parse(history);
+    //             }
+    //             tokenHistory.push(_token);
+    //             localStorage.setItem("TOKEN_HISTORY", JSON.stringify(tokenHistory));
+
+
+    //             setLoader(false);
+    //             setReCall(reCall + 1);
+    //             setOpenTokenCreator(false);
+    //         }
+    //     } catch (error) {
+    //         setLoader(false);
+    //         notifyError("Something went wrong, try later");
+    //         console.log(error);
+    //     }
+    // };
+
+    // const _deploySolarNFTContract = async (
+    //     signer,
+    //     account,
+    //     name,
+    //     symbol,
+    //     totalKilowatts,
+    //     burnPeriodInYears,
+    //     kilowattsToMint,
+    //     imageURL
+    // ) => {
+    //     try {
+    //         const factory = new ethers.ContractFactory(
+    //             SOLARNFT_ABI,
+    //             SOLARNFT_BYTECODE,
+    //             signer
+    //         );
+
+    //         // Deploy the contract with the required constructor parameters
+    //         const contract = await factory.deploy(
+    //             name,
+    //             symbol,
+    //             account, // initialOwner
+    //             totalKilowatts,
+    //             burnPeriodInYears
+    //         );
+
+    //         await contract.deployed();
+
+    //         if (contract.address) {
+    //             // Mint NFTs after deployment
+    //             const mintTx = await contract.mint(account, kilowattsToMint, imageURL);
+    //             await mintTx.wait();
+
+    //             // Record creation date
+    //             const today = Date.now();
+    //             const date = new Date(today);
+    //             const tokenCreatedDate = date.toLocaleDateString("en-US");
+
+    //             // Store token details
+    //             const tokenData = {
+    //                 account: account,
+    //                 totalKilowatts: totalKilowatts.toString(),
+    //                 burnPeriodInYears: burnPeriodInYears.toString(),
+    //                 name: name,
+    //                 symbol: symbol,
+    //                 tokenAddress: contract.address,
+    //                 transactionHash: contract.deployTransaction.hash,
+    //                 createdAt: tokenCreatedDate,
+    //                 logo: imageURL
+    //             };
+
+    //             // Update token history in localStorage
+    //             let tokenHistory = [];
+    //             const history = localStorage.getItem("TOKEN_HISTORY");
+    //             if (history) {
+    //                 tokenHistory = JSON.parse(history);
+    //             }
+    //             tokenHistory.push(tokenData);
+    //             localStorage.setItem("TOKEN_HISTORY", JSON.stringify(tokenHistory));
+
+    //             // Update UI state
+    //             setLoader(false);
+    //             setReCall(reCall + 1);
+    //             setOpenTokenCreator(false);
+
+    //             notifySuccess("SolarNFT contract deployed and NFTs minted successfully!");
+    //         }
+    //     } catch (error) {
+    //         setLoader(false);
+    //         notifyError("Something went wrong, please try again later.");
+    //         console.error(error);
+    //     }
+    // };
+
+    // const createSolarNFT = async (token, account, imageURL) => {
+    //     const {
+    //         name,
+    //         symbol,
+    //         totalKilowatts,
+    //         burnPeriodInYears,
+    //         kilowattsToMint
+    //     } = token;
+
+    //     try {
+    //         setLoader(true);
+    //         notifySuccess("Creating SolarNFT contract...");
+
+    //         // Input validation
+    //         if (
+    //             !name ||
+    //             !symbol ||
+    //             !totalKilowatts ||
+    //             !burnPeriodInYears ||
+    //             !kilowattsToMint
+    //         ) {
+    //             notifyError("All fields are required.");
+    //             setLoader(false);
+    //             return;
+    //         }
+
+    //         // Convert inputs to appropriate types
+    //         const totalKilowattsNum = Number(totalKilowatts);
+    //         const burnPeriodInYearsNum = Number(burnPeriodInYears);
+    //         const kilowattsToMintNum = Number(kilowattsToMint);
+
+    //         if (
+    //             isNaN(totalKilowattsNum) ||
+    //             isNaN(burnPeriodInYearsNum) ||
+    //             isNaN(kilowattsToMintNum)
+    //         ) {
+    //             notifyError("Kilowatts and burn period must be valid numbers.");
+    //             setLoader(false);
+    //             return;
+    //         }
+
+    //         // Establish Web3 connection
+    //         const web3Modal = new Web3Modal();
+    //         const connection = await web3Modal.connect();
+    //         const provider = new ethers.providers.Web3Provider(connection);
+    //         const signer = provider.getSigner();
+
+    //         // Deploy the contract and mint NFTs
+    //         await _deploySolarNFTContract(
+    //             signer,
+    //             account,
+    //             name,
+    //             symbol,
+    //             totalKilowattsNum,
+    //             burnPeriodInYearsNum,
+    //             kilowattsToMintNum,
+    //             imageURL
+    //         );
+    //     } catch (error) {
+    //         setLoader(false);
+    //         notifyError("Something went wrong, please try again later.");
+    //         console.error(error);
+    //     }
+    // };
+
+    // const _deploySolarNFTContract = async (
+    //     signer,
+    //     account,
+    //     name,
+    //     symbol,
+    //     totalKilowatts,
+    //     burnPeriodInYears,
+    //     imageURL // imageURL is no longer needed here if minting isn't done
+    // ) => {
+    //     try {
+    //         const factory = new ethers.ContractFactory(
+    //             SOLARNFT_ABI,
+    //             SOLARNFT_BYTECODE,
+    //             signer
+    //         );
+
+    //         // Deploy the contract with the required constructor parameters
+    //         const contract = await factory.deploy(
+    //             name,
+    //             symbol,
+    //             account, // initialOwner
+    //             totalKilowatts,
+    //             burnPeriodInYears
+    //         );
+
+    //         await contract.deployed();
+
+    //         if (contract.address) {
+    //             // Record creation date
+    //             const today = Date.now();
+    //             const date = new Date(today);
+    //             const tokenCreatedDate = date.toLocaleDateString("en-US");
+
+    //             // Store token details
+    //             const tokenData = {
+    //                 account: account,
+    //                 totalKilowatts: totalKilowatts.toString(),
+    //                 burnPeriodInYears: burnPeriodInYears.toString(),
+    //                 name: name,
+    //                 symbol: symbol,
+    //                 tokenAddress: contract.address,
+    //                 transactionHash: contract.deployTransaction.hash,
+    //                 createdAt: tokenCreatedDate,
+    //                 logo: imageURL
+    //             };
+
+    //             // Update token history in localStorage
+    //             let tokenHistory = [];
+    //             const history = localStorage.getItem("TOKEN_HISTORY");
+    //             if (history) {
+    //                 tokenHistory = JSON.parse(history);
+    //             }
+    //             tokenHistory.push(tokenData);
+    //             localStorage.setItem("TOKEN_HISTORY", JSON.stringify(tokenHistory));
+
+    //             // Update UI state
+    //             setLoader(false);
+    //             setReCall(reCall + 1);
+    //             setOpenTokenCreator(false);
+
+    //             notifySuccess("SolarNFT contract deployed successfully!");
+    //         }
+    //     } catch (error) {
+    //         setLoader(false);
+    //         notifyError("Something went wrong, please try again later.");
+    //         console.error(error);
+    //     }
+    // };
+
+    const _deploySolarNFTContract = async (
+        signer,
+        account,
+        name,
+        symbol,
+        totalKilowatts,
+        burnPeriodInYears,
+        imageURL
+    ) => {
         try {
             const factory = new ethers.ContractFactory(
-                ERC20GeneratorABI,
-                ERC20Generator_BYTECODE,
+                SOLARNFT_ABI,
+                SOLARNFT_BYTECODE,
                 signer
             );
 
-            const totalSupply = Number(supply);
-            const _initialSupply = ethers.utils.parseEther(
-                totalSupply.toString(),
-                "ether"
+            const contract = await factory.deploy(
+                name,
+                symbol,
+                account,
+                totalKilowatts,
+                burnPeriodInYears
             );
-
-            let contract = await factory.deploy(_initialSupply, name, symbol);
 
             await contract.deployed();
 
             if (contract.address) {
                 const today = Date.now();
-                let date = new Date(today);
-                const _tokenCreatedDate = date.toLocaleDateString("en-US");
+                const date = new Date(today);
+                const tokenCreatedDate = date.toLocaleDateString("en-US");
 
-                const _token = {
+                const tokenData = {
                     account: account,
-                    supply: supply.toString(),
+                    totalKilowatts: totalKilowatts.toString(),
+                    burnPeriodInYears: burnPeriodInYears.toString(),
                     name: name,
                     symbol: symbol,
                     tokenAddress: contract.address,
                     transactionHash: contract.deployTransaction.hash,
-                    createdAt: _tokenCreatedDate,
+                    createdAt: tokenCreatedDate,
                     logo: imageURL
                 };
 
-                let tokenHistory = [];
+                // Save token data to MongoDB
+                await fetch("http://localhost:5000/api/solar-nft", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(tokenData)
+                });
 
-                const history = localStorage.getItem("TOKEN_HISTORY");
-                if (history) {
-                    tokenHistory = JSON.parse(history);
-                }
-                tokenHistory.push(_token);
-                localStorage.setItem("TOKEN_HISTORY", JSON.stringify(tokenHistory));
-
-
+                // Update UI state
                 setLoader(false);
                 setReCall(reCall + 1);
                 setOpenTokenCreator(false);
+
+                notifySuccess("SolarNFT contract deployed and saved to database successfully!");
             }
         } catch (error) {
             setLoader(false);
-            notifyError("Something went wrong, try later");
-            console.log(error);
+            notifyError("Something went wrong, please try again later.");
+            console.error(error);
         }
     };
+
+
+    const createSolarNFT = async (token, account, imageURL) => {
+        const {
+            name,
+            symbol,
+            totalKilowatts,
+            burnPeriodInYears
+        } = token;
+
+        try {
+            setLoader(true);
+            notifySuccess("Creating SolarNFT contract...");
+
+            // Input validation
+            if (
+                !name ||
+                !symbol ||
+                !totalKilowatts ||
+                !burnPeriodInYears
+            ) {
+                notifyError("All fields are required.");
+                setLoader(false);
+                return;
+            }
+
+            // Convert inputs to appropriate types
+            const totalKilowattsNum = Number(totalKilowatts);
+            const burnPeriodInYearsNum = Number(burnPeriodInYears);
+
+            if (
+                isNaN(totalKilowattsNum) ||
+                isNaN(burnPeriodInYearsNum)
+            ) {
+                notifyError("Kilowatts and burn period must be valid numbers.");
+                setLoader(false);
+                return;
+            }
+
+            // Establish Web3 connection
+            const web3Modal = new Web3Modal();
+            const connection = await web3Modal.connect();
+            const provider = new ethers.providers.Web3Provider(connection);
+            const signer = provider.getSigner();
+
+            // Deploy the contract without minting NFTs
+            await _deploySolarNFTContract(
+                signer,
+                account,
+                name,
+                symbol,
+                totalKilowattsNum,
+                burnPeriodInYearsNum,
+                imageURL
+            );
+        } catch (error) {
+            setLoader(false);
+            notifyError("Something went wrong, please try again later.");
+            console.error(error);
+        }
+    };
+
+    const startBurnPeriod = async (contractAddress) => {
+        try {
+            setLoader(true);
+            notifySuccess("Starting burn period...");
+            
+            // Establish a connection to the contract
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(contractAddress, SOLARNFT_ABI, signer);
+
+            // Call startBurnPeriod function on the contract
+            const tx = await contract.startBurnPeriod();
+            await tx.wait();
+
+            setLoader(false);
+            notifySuccess("Burn period started successfully!");
+            setReCall(reCall + 1); // Optionally update UI or trigger a refresh if needed
+        } catch (error) {
+            setLoader(false);
+            notifyError("Failed to start burn period.");
+            console.error("Error starting burn period:", error);
+        }
+    };
+
 
     const createERC20 = async (token, account, imageURL) => {
         const { name, symbol, supply } = token;
@@ -453,7 +813,7 @@ export const StateContextProvider = ({ children }) => {
         }
     }
 
-    return <StateContext.Provider value={{ widthdrawToken, buyToken, transferToken, createICOSALE, GET_ALL_ICOSALE_TOKEN, GET_ALL_USER_ICOSALE_TOKEN, createERC20, connectWallet, openBuyToken, setOpenBuyToken, openWithdrawToken, setOpenWithdrawToken, openTransferToken, setOpenTransferToken, openTokenCreator, setOpenTokenCreator, openCreateICO, setOpenCreateICO, address, setAddress, accountBalance, loader, setLoader, currency, PINATA_API_KEY, PINATA_SECRET_KEY }}>{children}</StateContext.Provider>;
+    return <StateContext.Provider value={{ startBurnPeriod, widthdrawToken, buyToken, createSolarNFT, transferToken, createICOSALE, GET_ALL_ICOSALE_TOKEN, GET_ALL_USER_ICOSALE_TOKEN, createERC20, connectWallet, openBuyToken, setOpenBuyToken, openWithdrawToken, setOpenWithdrawToken, openTransferToken, setOpenTransferToken, openTokenCreator, setOpenTokenCreator, openCreateICO, setOpenCreateICO, address, setAddress, accountBalance, loader, setLoader, currency, PINATA_API_KEY, PINATA_SECRET_KEY }}>{children}</StateContext.Provider>;
 }
 
 export const usesStateContext = () => useContext(StateContext);

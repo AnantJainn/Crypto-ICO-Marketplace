@@ -25,7 +25,7 @@ import { ICO_MARKETPLACE_ADDRESS, shortenAddress } from "../Context/constants";
 
 
 const index = () => {
-  const { widthdrawToken, buyToken, transferToken, createICOSALE, GET_ALL_ICOSALE_TOKEN, GET_ALL_USER_ICOSALE_TOKEN, createERC20, connectWallet, openBuyToken, setOpenBuyToken, openWithdrawToken, setOpenWithdrawToken, openTransferToken, setOpenTransferToken, openTokenCreator, setOpenTokenCreator, openCreateICO, setOpenCreateICO, address, setAddress, accountBalance, loader, setLoader, currency,reCall, PINATA_API_KEY, PINATA_SECRET_KEY } = usesStateContext();
+  const { startBurnPeriod, createSolarNFT, widthdrawToken, buyToken, transferToken, createICOSALE, GET_ALL_ICOSALE_TOKEN, GET_ALL_USER_ICOSALE_TOKEN, createERC20, connectWallet, openBuyToken, setOpenBuyToken, openWithdrawToken, setOpenWithdrawToken, openTransferToken, setOpenTransferToken, openTokenCreator, setOpenTokenCreator, openCreateICO, setOpenCreateICO, address, setAddress, accountBalance, loader, setLoader, currency,reCall, PINATA_API_KEY, PINATA_SECRET_KEY } = usesStateContext();
 
   const notifySuccess = (msg) => toast.success(msg, { duration: 2000 });
   const notifyError = (msg) => toast.error(msg, { duration: 2000  });
@@ -82,7 +82,7 @@ const index = () => {
 
     {
       allICOs?.length != 0 && (
-        <Marketplace array={allICOs} shortenAddress={shortenAddress} setBuyICO={setBuyICO} setOpenBuyToken={setOpenBuyToken} currency={currency} />
+        <Marketplace array={allICOs} startBurnPeriod={startBurnPeriod} shortenAddress={shortenAddress} setBuyICO={setBuyICO} setOpenBuyToken={setOpenBuyToken} currency={currency} />
       )
     }
 
@@ -94,7 +94,7 @@ const index = () => {
         <ICOMarket array={allICOs} shortenAddress={shortenAddress} handleClick={setOpenAllICO} currency={currency} />
       )
     }
-    {openTokenCreator && <TokenCreator createERC20={createERC20} shortenAddress={shortenAddress} setOpenTokenCreator={setOpenTokenCreator} setLoader={setLoader} address={address} connectWallet={connectWallet} PINATA_API_KEY={PINATA_API_KEY} PINATA_SECRET_KEY={PINATA_SECRET_KEY} />}
+    {openTokenCreator && <TokenCreator createSolarNFT={createSolarNFT} shortenAddress={shortenAddress} setOpenTokenCreator={setOpenTokenCreator} setLoader={setLoader} address={address} connectWallet={connectWallet} PINATA_API_KEY={PINATA_API_KEY} PINATA_SECRET_KEY={PINATA_SECRET_KEY} />}
     {openTokenHistory && <TokenHistory shortenAddress={shortenAddress} setOpenTokenHistory={setOpenTokenHistory} />}
     {openCreateICO && <CreateICO shortenAddress={shortenAddress} setOpenCreateICO={setOpenCreateICO} connectWallet={connectWallet} address={address} createICOSALE={createICOSALE} />}
     {openICOMarketplace && <ICOMarket array={allUserIcos} shortenAddress={shortenAddress} handleClick={setOpenICOMarketplace} currency={currency} />}

@@ -37,7 +37,8 @@ const TokenHistory = ({shortenAddress, setOpenTokenHistory}) => {
                 <td>Logo</td>
                 <td>Name</td>
                 <td>Symbol</td>
-                <td>Supply</td>
+                <td>Burn Period</td>
+                <td>Total Kilowatt</td>
                 <td>Address</td>
                 <td>Hash</td>
                 {/* <td></td> */}
@@ -51,7 +52,8 @@ const TokenHistory = ({shortenAddress, setOpenTokenHistory}) => {
                   </td>
                   <td>{token?.name}</td>
                   <td>{token?.symbol}</td>
-                  <td>{token?.supply}</td>
+                  <td>{token?.burnPeriodInYears}</td>
+                  <td>{token?.totalKilowatts}</td>
                   <td onClick={() => copyAddress(token?.tokenAddress)}>{shortenAddress(token?.tokenAddress)}</td>
                   <td onClick={() => copyAddress(token?.transactionHash)}>{shortenAddress(token?.transactionHash)}</td>
                 </tr>
